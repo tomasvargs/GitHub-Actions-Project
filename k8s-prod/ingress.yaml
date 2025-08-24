@@ -46,6 +46,6 @@ spec:
                   number: 80
   tls:
     - hosts:
-        - adityajaiswal.com
-        - www.adityajaiswal.com
-      secretName: adityajaiswal-co-tls
+        - a24.rest
+        - www.a24.rest
+      secretName: a24-co-tls
