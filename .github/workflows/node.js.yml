@@ -150,7 +150,7 @@ jobs:
           file: ./client/Dockerfile
 
   trivy_image_scan:
-    runs-on: Agent-1
+    runs-on: Agent-0
     needs: build_frontend_docker_image_and_push   # or whatever job built/pushed your image
     steps:
       - name: Checkout code
