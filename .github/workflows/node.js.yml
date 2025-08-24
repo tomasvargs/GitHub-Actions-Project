@@ -100,4 +100,82 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
+
+  build_backend_docker_image_and_push:
+    runs-on: ubuntu-latest
+    needs: sonar-backend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build and Push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./api  
+          push: true
+          tags: Project1/backend:latest
+          file: ./api/Dockerfile
+
+  build_frontend_docker_image_and_push:
+    runs-on: ubuntu-latest
+    needs: sonar-backend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build and Push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./client
+          push: true
+          tags: Project1/frontend:latest
+          file: ./client/Dockerfile
+
+  trivy_image_scan:
+    runs-on: Agent-1
+    needs: build_frontend_docker_image_and_push   # or whatever job built/pushed your image
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Trivy image scan for backend
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: image               # 👈 scan container image
+          image-ref: Project1/backend:latest
+          format: table
+          exit-code: '0'                 
+          ignore-unfixed: true
+          vuln-type: os,library
+          severity: CRITICAL,HIGH
+          
+      - name: Run Trivy image scan for frontend
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: image               # 👈 scan container image
+          image-ref: Project1/frontend:latest
+          format: table
+          exit-code: '0'              
+          ignore-unfixed: true
+          vuln-type: os,library
+          severity: CRITICAL,HIGH
+
   
