@@ -1,4 +1,4 @@
-# 3-Tier DevSecOps Project
+# GitHub Actions Production CICD Pipeline Project
 
 This repository contains a simple Node.js API and a React client used for a user management demo. Follow the steps below to get the project running locally.
 
@@ -28,4 +28,4 @@ This repository contains a simple Node.js API and a React client used for a user
 
 5. Open `http://localhost:3000` in your browser to use the application.
 
-The client now displays an animated banner welcoming you to **DevOps Shack**.
+
