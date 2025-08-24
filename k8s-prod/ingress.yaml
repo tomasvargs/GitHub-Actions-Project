@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: adityajaiswal.com
+    - host: a24.rest
       http:
         paths:
           - path: /api
@@ -27,7 +27,7 @@ spec:
                 name: frontend-svc
                 port:
                   number: 80
-    - host: www.adityajaiswal.com
+    - host: www.a24.rest
       http:
         paths:
           - path: /api
