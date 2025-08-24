@@ -8,7 +8,7 @@ metadata:
     app: mysql
 type: Opaque
 stringData:
-  MYSQL_ROOT_PASSWORD: Aditya
+  MYSQL_ROOT_PASSWORD: Thomas
 
 ---
 apiVersion: v1
